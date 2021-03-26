@@ -1,0 +1,204 @@
+@page
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Home";
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/lib/table-col-width/css/col-width.min.css" type="text/css" />
+}
+
+<div class="container">
+    <h1 class="text-center my-3">這是首頁</h1>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card border-info">
+                <h5 class="card-header text-white bg-info">網站內容聲明</h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        網站資料內容來源包括熱心網友提供，以及 <a href="#references">References</a> 中所列，並作部分修改（文字勘誤、潤飾）而成。若有侵權還煩請來信 <a href="mailto:ychsieh95@gmail.com">ychsieh95@gmail.com</a> 聯繫告知，網站將立即下架該內容。
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="d-sm-none col-12 mt-3"></div>
+        <div class="col-sm-4">
+            <div class="card border-info">
+                <h5 class="card-header text-white bg-info">網站資料授權</h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        除已明確標示出處之資料（如部分武將圖片），其餘內容皆以 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"> CC BY-NC-SA 4.0 <img src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png"></a> 授權，授權範圍詳見網站所列。
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="d-sm-none col-12 mt-3"></div>
+        <div class="col-sm-4">
+            <div class="card border-info">
+                <h5 class="card-header text-white bg-info">其他說明</h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        若有任何資料提供，或對於網站有建議、錯誤回報等，煩請來信 <a href="mailto:ychsieh95@gmail.com">ychsieh95@gmail.com</a> 通知，網站將會在第一時間回應，感謝您的協助。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <h1 class="my-3">頁底按鈕功能</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr class="table-info text-center">
+                <th class="td-col-1">#</th>
+                <th class="td-col-1">圖示</th>
+                <th class="td-col-8 text-left">內容</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center">
+                <td>1</td>
+                <td><i class="fas fa-user-circle fa-fw"></i></td>
+                <td class="text-left">關於作者</td>
+            </tr>
+            <tr class="text-center">
+                <td>2</td>
+                <td><i class="fas fa-home fa-fw"></i></td>
+                <td class="text-left">返回首頁</td>
+            </tr>
+            <tr class="text-center">
+                <td>3</td>
+                <td><i class="fas fa-arrow-circle-up fa-fw"></i></td>
+                <td class="text-left">回最上層</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h1 class="my-3">更新日誌</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr class="table-info text-center">
+                <th class="td-col-1">#</th>
+                <th class="td-col-1">日期</th>
+                <th class="td-col-8 text-left">內容</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center">
+                <td>12</td>
+                <td>2019-04-17</td>
+                <td class="text-left">
+                    網站架構改寫重新上線
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>11</td>
+                <td>2017-12-10</td>
+                <td class="text-left">
+                    新增 [武將] 部分武將圖片<br>
+                    最佳化 [武將] 詳細頁面排版顯示<br>
+                    修正 [任務] 類別快搜─心技能 搜尋異常問題<br>
+                    最佳化任務資料庫
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>10</td>
+                <td>2017-11-30</td>
+                <td class="text-left">最佳化武將名稱排序與資料庫更新</td>
+            </tr>
+            <tr class="text-center">
+                <td>9</td>
+                <td>2017-11-29</td>
+                <td class="text-left">修正 iPhone 陣型快看無法顯示問題</td>
+            </tr>
+            <tr class="text-center">
+                <td>8</td>
+                <td>2017-11-28</td>
+                <td class="text-left">
+                    新增 [建議與回報] 功能<br />
+                    修正 [裝備] 頁面類別快搜功能錯誤問題<br />
+                    DODO 腳本資訊新增任務快連與陣型快看<br />
+                    1 - 200 建議練等表新增任務快連與陣型快看
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>7</td>
+                <td>2017-11-26</td>
+                <td class="text-left">
+                    新增 1 - 200 建議練等表<br />
+                    建議腳本隊伍平均等級精確至小數點<br />
+                    新增 DODO 腳本資訊<br />
+                    DODO 腳本資訊新增任務快連
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>6</td>
+                <td>2017-11-25</td>
+                <td class="text-left">
+                    新增 [資源] 頁面，包含 DODO 地圖 ID 列表與 SP 回復對照表<br />
+                    修改 [地圖] 頁面，改為預先載入大地圖縮圖 (1100x1326)<br />
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>5</td>
+                <td>2017-11-24</td>
+                <td class="text-left">細部版面優化</td>
+            </tr>
+            <tr class="text-center">
+                <td>4</td>
+                <td>2017-11-23</td>
+                <td class="text-left">
+                    網頁內容採 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><b>CC BY-NC-SA 4.0</b></a> 授權<br />
+                    新增 [地圖] 頁面，包含全地圖與迷宮地圖<br />
+                    新增裝備部位排序與調整材料種類排序
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>3</td>
+                <td>2017-11-22</td>
+                <td class="text-left">
+                    新增 [任務] 頁面<br />
+                    新增 [礦怪] 頁面<br />
+                    新增 [材料] 頁面
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>2</td>
+                <td>2017-11-20</td>
+                <td class="text-left">
+                    新增 [裝備] 頁面<br />
+                    新增 [野怪] 頁面<br />
+                    最佳化 [武將] 行動裝置頁面（完整支援 iPhone6 以上螢幕）
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td>1</td>
+                <td>2017-11-18</td>
+                <td class="text-left">新增 [武將] 頁面</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h1 class="my-3">References</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr class="table-info text-center">
+                <th class="td-col-1">#</th>
+                <th class="td-col-9 text-left">文章</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center">
+                <td>1</td>
+                <td class="text-left"><a href="http://shota.ddns.net/">吞食伊拉克</a></td>
+            </tr>
+            <tr class="text-center">
+                <td>2</td>
+                <td class="text-left"><a href="http://15963578.blogspot.tw/p/ctrlf.html">DODO刷NPC大全集 - TS SOS</a></td>
+            </tr>
+            <tr class="text-center">
+                <td>3</td>
+                <td class="text-left"><a href="https://forum.gamer.com.tw/A.php?bsn=5334">吞食天地 On-Line - 巴哈姆特</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

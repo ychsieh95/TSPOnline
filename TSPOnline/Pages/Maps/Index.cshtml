@@ -1,0 +1,66 @@
+@page
+@model TSPOnline.Pages.Maps.IndexModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "迷宮圖";
+}
+
+<div class="container">
+    <nav class="mt-3">
+        <div class="nav nav-tabs">
+            @foreach (var location in Model.Labyrinths.Keys)
+            {
+                <a class="nav-item nav-link @(location.SequenceEqual(Model.Labyrinths.Keys.First()) ? "active" : "")"
+                   id="nav-@location-tab" data-toggle="tab" href="#nav-@location">
+                    @location
+                </a>
+            }
+        </div>
+    </nav>
+    <div class="tab-content">
+        @foreach (var location in Model.Labyrinths.Keys)
+        {
+            <div class="tab-pane fade @(location.SequenceEqual(Model.Labyrinths.Keys.First()) ? " show active" : "")" id="nav-@location">
+                <div class="row">
+                    @for (int i = 0; i < Model.Labyrinths[location].Count; i += 4)
+                    {
+                        @for (int j = i; (j < i + 4) && (j < Model.Labyrinths[location].Count); j++)
+                        {
+                            <div class="col-md-3">
+                                @{ string map = @Model.Labyrinths[location][j]; }
+
+                                <div class="card border-info mt-3" id="card-@map">
+                                    <h5 class="card-header bg-info text-white text-center">@map</h5>
+                                    <div class="card-body">
+                                        <img src="~/images/labyrinths/@(location)/@(map).jpg"
+                                             class="img-fluid"
+                                             alt="@map" data-toggle="modal" data-target="#modal-@map" />
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="modal-@map">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">@map</h5>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    <span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="~/images/labyrinths/@(location)/@(map).jpg" class="img-fluid" alt="@map" />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

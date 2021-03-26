@@ -1,0 +1,75 @@
+@page
+@model DodoScriptsModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "DODO 腳本資訊";
+}
+
+<div class="container">
+    <h1 class="my-3">DODO 腳本資訊</h1>
+    <p>
+        註：紅字腳本表示為非斷刷<br />
+        註：若有搭配機關盒則適合等級可再增加 ±10<br />
+        註：平均等級 +40 即為我方可 100% 合擊的等級<br />
+        註：隊伍敏捷為對方隊伍最高敏捷，建議我方敏捷高於此數值
+    </p>
+    <div class="row">
+        @for (int i = 0, dodoScriptCount = Model.DodoScripts.Count; i < dodoScriptCount; i += (int)Math.Ceiling((decimal)dodoScriptCount / 2))
+        {
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="table-info text-center">
+                            <td>DODO 腳本</td>
+                            <td>適合等級</td>
+                            <td>平均等級</td>
+                            <td>隊伍敏捷</td>
+                            <td>任務</td>
+                            <td>陣型</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = i; j < i + Math.Ceiling((decimal)dodoScriptCount / 2) && j < dodoScriptCount; j++)
+                        {
+                            var dodoScript = Model.DodoScripts[j];
+                            <tr class="text-center" style="color: @(dodoScript.IsInterrupted ? "" : "red");">
+                                <td class="text-left">[@dodoScript.Location] @dodoScript.Name (@dodoScript.LV_Boss)</td>
+                                <td>@(dodoScript.LV_Boss - 19 <= 0 ? 0 : dodoScript.LV_Boss - 19) - @(dodoScript.LV_Boss + 19)</td>
+                                <td>@dodoScript.LV_Average</td>
+                                <td>@(dodoScript.AGI > 0 ? dodoScript.AGI.ToString() : "")</td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(dodoScript.Mission))
+                                    {
+                                        <a asp-page="/Missions/Index" asp-route-Name="@dodoScript.Mission"><i class="fas fa-info-circle fa-fw"></i></a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(dodoScript.ImageName))
+                                    {
+                                        <a href="#" data-toggle="modal" data-target="#modal-@dodoScript.Name-@dodoScript.Location"><i class="fas fa-image fa-fw"></i></a>
+                                        <div class="modal fade" id="modal-@dodoScript.Name-@dodoScript.Location">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">[@dodoScript.Location] @dodoScript.Name</h5>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body text-center">
+                                                        <img src="~/images/dodo-scripts/@dodoScript.ImageName" class="img-fluid" alt="[@dodoScript.Location] @dodoScript.Name" />
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

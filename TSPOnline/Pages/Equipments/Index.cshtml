@@ -1,0 +1,149 @@
+@page
+@model TSPOnline.Pages.Equipments.IndexModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "裝備";
+}
+
+<div class="container">
+    <div asp-validation-summary="All" class="my-3"></div>
+    <div class="card my-3">
+        <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#site-collapse">
+                部位快搜
+            </button>
+        </h5>
+        <div class="collapse" id="site-collapse">
+            <div class="card-body">
+                <a asp-route-Site="手">手</a>（<a asp-route-Type="weapon">武</a>、<a asp-route-Type="book">書</a>）、
+                <a asp-route-Site="頭">頭</a>、
+                <a asp-route-Site="衣">衣</a>、
+                <a asp-route-Site="腕">腕</a>、
+                <a asp-route-Site="腳">腳</a>
+            </div>
+        </div>
+    </div>
+    <div class="card my-3">
+        <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#search-collapse">
+                裝備快搜
+            </button>
+        </h5>
+        <div class="collapse" id="search-collapse">
+            <div class="card-body">
+                <div class="form-horizontal">
+                    <form method="get" class="my-3">
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">最低等級</label>
+                            <div class="col-10">
+                                <input asp-for="MinLevel" type="number" class="form-control" value="0" min="0" max="600" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">最高等級</label>
+                            <div class="col-10">
+                                <input asp-for="MaxLevel" type="number" class="form-control" value="600" min="0" max="600" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">裝備部位</label>
+                            <div class="col-10">
+                                <select asp-for="Site" asp-items="@Model.Sites" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">名稱</label>
+                            <div class="col-10">
+                                <input asp-for="Name" type="text" class="form-control" placeholder="裝備名稱" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">能力</label>
+                            <div class="col-10">
+                                <input asp-for="States" type="text" class="form-control" placeholder="裝備能力" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">裝備類別</label>
+                            <div class="col-10">
+                                <select asp-for="Type" asp-items="@Model.Types" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">取得位置</label>
+                            <div class="col-10">
+                                <input asp-for="Location" type="text" class="form-control" placeholder="取得位置" />
+                            </div>
+                        </div>
+                        <div class="form-group col-form-label row">
+                            <label class="col-2 text-right">取得來源</label>
+                            <div class="col-10">
+                                <input asp-for="Source" type="text" class="form-control" placeholder="取得來源" />
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <input type="submit" class="btn btn-primary" value="搜尋" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-none d-sm-block">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="table-info text-center">
+                    <th>部位</th>
+                    <th>名稱</th>
+                    <th>等級</th>
+                    <th>類別</th>
+                    <th>能力</th>
+                    <th class="text-left">取得位置</th>
+                    <th>購買金</th>
+                    <th>購買點數</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var equipment in Model.Equipments)
+                {
+                    <tr class="text-center">
+                        <td>@equipment.Site</td>
+                        <td>@equipment.Name</td>
+                        <td>@equipment.LV</td>
+                        <td>@equipment.Type</td>
+                        <td>@equipment.GetStatesString()</td>
+                        <td class="text-left">@equipment.Location</td>
+                        <td>@equipment.Price</td>
+                        <td>@equipment.Point</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="d-sm-none">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="table-info text-center">
+                    <th>部位</th>
+                    <th>名稱</th>
+                    <th>等級</th>
+                    <th>類別</th>
+                    <th>能力</th>
+                    <th class="text-left">取得位置</th>
+            </thead>
+            <tbody>
+                @foreach (var equipment in Model.Equipments)
+                {
+                    <tr class="text-center">
+                        <td>@equipment.Site</td>
+                        <td>@equipment.Name</td>
+                        <td>@equipment.LV</td>
+                        <td>@equipment.Type</td>
+                        <td>@equipment.GetStatesString()</td>
+                        <td class="text-left">@equipment.Location</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

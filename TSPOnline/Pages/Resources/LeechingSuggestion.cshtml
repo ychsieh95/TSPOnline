@@ -1,0 +1,111 @@
+@page
+@model LeechingSuggestionModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "建議腳本";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-3"></div>
+        <div class="col-12">
+            <h1>開荒</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-info text-center">
+                        <th>等級</th>
+                        <th>名稱</th>
+                        <th>均等</th>
+                        <th>AGI</th>
+                        <th>備註</th>
+                        <th>任務</th>
+                        <th>陣型</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dodoScript in Model.DodoScripts.TakeWhile(dodoScript => !string.IsNullOrEmpty(dodoScript.SUG_LV_New)))
+                    {
+                        <tr class="text-center">
+                            <td>@dodoScript.SUG_LV_New.Replace("-", " - ")</td>
+                            <td>@dodoScript.Name</td>
+                            <td>@dodoScript.LV_Average</td>
+                            <td>@(dodoScript.AGI > 0 ? dodoScript.AGI.ToString() : "")</td>
+                            <td>@dodoScript.Remark</td>
+                            <td><a asp-page="/Missions/Index" asp-route-Name="@dodoScript.Mission"><i class="fas fa-info-circle fa-fw"></i></a></td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#modal-new-@dodoScript.Name-@dodoScript.Location"><i class="fas fa-image fa-fw"></i></a>
+                                <div class="modal fade" id="modal-new-@dodoScript.Name-@dodoScript.Location">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">[@dodoScript.Location] @dodoScript.Name</h5>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="~/images/dodo-scripts/@dodoScript.ImageName" class="img-fluid" alt="[@dodoScript.Location] @dodoScript.Name" />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12">
+            <hr />
+        </div>
+        <div class="col-12">
+            <h1>200 武將帶</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-info text-center">
+                        <td>等級</td>
+                        <td>名稱</td>
+                        <td>均等</td>
+                        <td>AGI</td>
+                        <td>備註</td>
+                        <td>任務</td>
+                        <td>陣型</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dodoScript in Model.DodoScripts.SkipWhile(dodoScript => !string.IsNullOrEmpty(dodoScript.SUG_LV_New)))
+                    {
+                        <tr class="text-center">
+                            <td>@dodoScript.SUG_LV_New.Replace("-", " - ")</td>
+                            <td>@dodoScript.Name</td>
+                            <td>@dodoScript.LV_Average</td>
+                            <td>@(dodoScript.AGI > 0 ? dodoScript.AGI.ToString() : "")</td>
+                            <td>@dodoScript.Remark</td>
+                            <td><a asp-page="/Missions/Index" asp-route-Name="@dodoScript.Mission"><i class="fas fa-info-circle fa-fw"></i></a></td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#modal-old-@dodoScript.Name-@dodoScript.Location"><i class="fas fa-image fa-fw"></i></a>
+                                <div class="modal fade" id="modal-old-@dodoScript.Name-@dodoScript.Location">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">[@dodoScript.Location] @dodoScript.Name</h5>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="~/images/dodo-scripts/@dodoScript.ImageName" class="img-fluid" alt="[@dodoScript.Location] @dodoScript.Name" />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

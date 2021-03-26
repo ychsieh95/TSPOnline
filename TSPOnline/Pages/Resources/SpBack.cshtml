@@ -1,0 +1,57 @@
+@page
+@model SpBackModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "SP 回復列表";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-6 mt-3">
+            <h1>1 級清流<br />知力與恢復 SP 量對照表</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-info text-center">
+                        <td>知力</td>
+                        <td>回復 SP 量</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int sp = 16;
+                        foreach (var level in Model.SkillLevels)
+                        {
+                            <tr class="text-center">
+                                <td>@level</td>
+                                <td>@(sp++)</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12 col-sm-6 mt-3">
+            <h1>軍師知力<br />回覆 SP 量對照表</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-info text-center">
+                        <td>知力</td>
+                        <td>回復 SP 量</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        sp = 1;
+                        foreach (var INT in Model.StaffINT)
+                        {
+                            <tr class="text-center">
+                                <td>@INT</td>
+                                <td>@(sp++)</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

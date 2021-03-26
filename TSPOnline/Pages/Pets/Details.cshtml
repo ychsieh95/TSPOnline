@@ -1,0 +1,120 @@
+@page "{Name}"
+@model DetailsModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "武將資訊";
+}
+
+<div class="container">
+    <div asp-validation-summary="All" class="my-3"></div>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-info text-center">
+                <th colspan="8">@Model.Pet.Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center">
+                <td colspan="8">
+                    @if (string.IsNullOrEmpty(Model.PetImageUrl))
+                    {
+                        <span style="color: red;">圖片從缺，歡迎提供</span>
+                    }
+                    else
+                    {
+                        <img src="~/images/pets/@Model.PetImageUrl" class="img-thumbnail" style="max-width: 100%;" />
+                    }
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td class="bg-success text-white" style="width: 12.5%;">等級</td>
+                <td style="width: 12.5%;">@(Model.Pet.Statistics.Find(statistic => statistic.RE == 0).LV < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == 0).LV.ToString())</td>
+                <td class="bg-success text-white" style="width: 12.5%;">屬性</td>
+                <td style="width: 12.5%;">@Model.Pet.Attribute</td>
+                <td class="bg-success text-white" style="width: 12.5%;">職業</td>
+                <td style="width: 12.5%;">@Model.Pet.Occupation</td>
+                <td class="bg-success text-white" style="width: 12.5%;">網羅</td>
+                <td style="width: 12.5%;">@(Model.Pet.Catch ? "是" : "否")</td>
+            </tr>
+            <tr class="text-center">
+                <td class="bg-success text-white">能力</td>
+                <td class="p-0" colspan="7">
+                    <table class="table table-striped m-0">
+                        <thead>
+                            <tr class="text-center">
+                                <td></td>
+                                <td>LV</td>
+                                <td>HP</td>
+                                <td>SP</td>
+                                <td>知力</td>
+                                <td>武力</td>
+                                <td>防禦</td>
+                                <td>體能</td>
+                                <td>能量</td>
+                                <td>敏捷</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                string[] re = { "未轉", "一轉", "二轉" };
+                                for (int i = 0; i < 3; i++)
+                                {
+                                    <tr class="text-center">
+                                        <td>@re[i]</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).LV < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).LV.ToString())</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).HP < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).HP.ToString())</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).SP < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).SP.ToString())</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).INT < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).INT.ToString())</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).ATK < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).ATK.ToString())</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).DEF < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).DEF.ToString())</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).HPX < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).HPX.ToString())</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).SPX < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).SPX.ToString())</td>
+                                        <td>@(Model.Pet.Statistics.Find(statistic => statistic.RE == i).AGI < 0 ? "" : Model.Pet.Statistics.Find(statistic => statistic.RE == i).AGI.ToString())</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td class="bg-success text-white">技能</td>
+                <td class="p-0" colspan="7">
+                    <table class="table table-striped m-0">
+                        <thead>
+                            <tr class="text-center">
+                                <td width="25%"></td>
+                                <td width="25%">技一</td>
+                                <td width="25%">技二</td>
+                                <td width="25%">技三</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < 3; i++)
+                            {
+                                <tr class="text-center">
+                                    <td>@re[i]</td>
+                                    <td>@Model.Pet.Skills.Find(skills => skills.RE == i).Skill1</td>
+                                    <td>@Model.Pet.Skills.Find(skills => skills.RE == i).Skill2</td>
+                                    <td>@Model.Pet.Skills.Find(skills => skills.RE == i).Skill3</td>
+                                </tr>
+                            }
+                            <tr>
+                                <td>第四特技</td>
+                                <td colspan="3">@Model.Pet.SpecialSkill</td>
+                            </tr>
+                            <tr>
+                                <td>第五無雙技</td>
+                                <td colspan="3">@Model.Pet.UnparalleledSkill</td>
+                            </tr>
+                            <tr>
+                                <td>被動技能</td>
+                                <td colspan="3">@Model.Pet.PassiveSkill</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

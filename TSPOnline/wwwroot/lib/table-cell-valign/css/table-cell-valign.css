@@ -1,0 +1,23 @@
+.table th {
+  vertical-align: middle;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.table thead th {
+  vertical-align: middle;
+}
+
+.table thead td {
+  vertical-align: middle;
+}
+
+.table tbody tr th {
+  vertical-align: middle;
+}
+
+.table tbody tr td {
+  vertical-align: middle;
+}
