@@ -1,0 +1,143 @@
+@page
+@model TSPOnline.Pages.Materials.IndexModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "材料";
+}
+
+<div class="container">
+    <div asp-validation-summary="All" class="my-3"></div>
+    <div class="card my-3">
+        <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#type-collapse">
+                類別快搜
+            </button>
+        </h5>
+        <div class="collapse" id="type-collapse">
+            <div class="card-body">
+                <a asp-route-Type="木">木</a>、
+                <a asp-route-Type="布">布</a>、
+                <a asp-route-Type="皮">皮</a>、
+                <a asp-route-Type="竹">竹</a>、
+                <a asp-route-Type="特礦">特礦</a>、
+                <a asp-route-Type="紙">紙</a>、
+                <a asp-route-Type="骨">骨</a>、
+                <a asp-route-Type="陶">陶</a>
+            </div>
+        </div>
+    </div>
+    <div class="card my-3">
+        <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#search-collapse">
+                材料快搜
+            </button>
+        </h5>
+        <div class="collapse" id="search-collapse">
+            <div class="card-body">
+                <div class="form-horizontal">
+                    <form method="get" class="my-3">
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">種類</label>
+                            <div class="col-10">
+                                <select asp-for="Type" asp-items="@Model.Types" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">最低等級</label>
+                            <div class="col-10">
+                                <input asp-for="MinLevel" type="number" class="form-control" value="0" min="0" max="600" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">最高等級</label>
+                            <div class="col-10">
+                                <input asp-for="MaxLevel" type="number" class="form-control" value="600" min="0" max="600" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">名稱</label>
+                            <div class="col-10">
+                                <input asp-for="Name" type="text" class="form-control" placeholder="物品名稱" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">地區</label>
+                            <div class="col-10">
+                                <input asp-for="Location" type="text" class="form-control" placeholder="任務地區" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">NPC 屬性</label>
+                            <div class="col-10">
+                                <select asp-for="NpcAttribute" asp-items="@Model.NpcAttributes" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label text-right">NPC 名稱</label>
+                            <div class="col-10">
+                                <input asp-for="NpcName" type="text" class="form-control" placeholder="NPC 名稱" />
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <input type="submit" class="btn btn-primary" value="搜尋" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-none d-sm-block">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="table-info text-center">
+                    <th>種類</th>
+                    <th>物品等級</th>
+                    <th>物品名稱</th>
+                    <th class="text-left">地區─地點</th>
+                    <th>NPC 等級</th>
+                    <th>NPC 屬性</th>
+                    <th>NPC 名稱</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var material in Model.Materials)
+                {
+                    <tr class="text-center">
+                        <td>@material.Type</td>
+                        <td>@material.LV</td>
+                        <td style="white-space: nowrap;">@material.Name</td>
+                        <td class="text-left">@material.Location</td>
+                        <td>@(material.NpcLV < 0 ? "" : material.NpcLV.ToString())</td>
+                        <td>@material.NpcAttribute</td>
+                        <td>@material.NpcName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="d-sm-none">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="table-info text-center">
+                    <th>種類</th>
+                    <th>物品等級</th>
+                    <th>物品名稱</th>
+                    <th class="text-left">地區─地點</th>
+                    <th>NPC 名稱</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var material in Model.Materials)
+                {
+                    <tr class="text-center">
+                        <td>@material.Type</td>
+                        <td>@material.LV</td>
+                        <td style="white-space: nowrap;">@material.Name</td>
+                        <td class="text-left">@material.Location</td>
+                        <td>@material.NpcName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
