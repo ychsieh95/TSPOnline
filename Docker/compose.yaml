@@ -1,0 +1,13 @@
+name: tsponline
+
+services:
+  tsponline:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+    image: tsp-holey-cc
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../files/database:/app/files/database

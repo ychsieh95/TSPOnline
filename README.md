@@ -3,7 +3,7 @@
 
 # TSPOnline
 
-![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4)
+![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)
 ![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey)
 
 TSPOnline is a community-maintained resource site for **吞食天地完美版** (Tun Shih Tien Ti — Complete Edition), a Taiwanese Romance-of-the-Three-Kingdoms-themed online game. It catalogs monsters, pets, equipment, materials, ores, missions, maps, and other in-game data for players.
@@ -20,6 +20,7 @@ TSPOnline is a community-maintained resource site for **吞食天地完美版** 
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Configuration](#configuration)
+  * [Database](#database)
   * [Running Locally](#running-locally)
 * [Project Structure](#project-structure)
 * [Deployment](#deployment)
@@ -45,29 +46,37 @@ The full scope and terms of the license are listed on the site itself.
 
 | Layer | Technology |
 | --- | --- |
-| Framework | ASP.NET Core 8.0 (Razor Pages, Runtime Compilation) |
-| Data access | [Dapper](https://github.com/DapperLib/Dapper) over SQLite (`TSPOnline/files/database/tsponline.db`) |
-| Front-end libraries | Managed via [LibMan](https://learn.microsoft.com/aspnet/core/client-side/libman/) — jQuery, Bootstrap, Font Awesome, etc. |
+| Framework | ASP.NET Core 10.0 (Razor Pages, Runtime Compilation) |
+| Data access | [Dapper](https://github.com/DapperLib/Dapper) over SQLite (`files/database/tsponline.db`) |
+| Front-end libraries | Managed via [LibMan](https://learn.microsoft.com/aspnet/core/client-side/libman/) — jQuery, Bootstrap, Bootstrap Toggle, Font Awesome |
 | Deployment | Docker / Docker Compose |
 
 ## Getting Started
 
 ### Prerequisites
 
-* [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+* [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+* [Docker](https://docs.docker.com/get-docker/) — only for the container workflow described under [Deployment](#deployment)
 
 ### Configuration
 
-`TSPOnline/appsettings.json` holds the database connection string and Google reCAPTCHA credentials. It is intentionally excluded from version control (see `.gitignore`), so you must create it yourself before running the project. Copy the provided template and fill in your own values:
+The checked-in `appsettings.json` holds nothing but the local SQLite connection string and contains no secrets; `appsettings.example.json` keeps a reference copy of the same shape.
+
+To override settings, use environment variables or an environment-specific `appsettings.{Environment}.json` — for example `appsettings.Development.json`, which ASP.NET Core loads automatically when `ASPNETCORE_ENVIRONMENT=Development` (the value set by the launch profile) and which Git ignores. In environment variables, nested keys are separated by double underscores:
 
 ```bash
-cp TSPOnline/appsettings.example.json TSPOnline/appsettings.json
+ConnectionStrings__DefaultConnection='Data Source=/data/tsponline.db' dotnet run
 ```
+
+### Database
+
+No manual database setup is required. On startup the application resolves the configured `Data Source` against the content root, creates the containing directory, and — if the database file does not exist yet — copies the bundled `files/database/tsponline.seed.db` into place so the site starts with the reference data. The schema is then applied with `CREATE TABLE IF NOT EXISTS`, so a missing seed simply leaves you with an empty database that still has the correct tables.
+
+The generated runtime database and its SQLite sidecar files are excluded from Git; only the seed is tracked.
 
 ### Running Locally
 
 ```bash
-cd TSPOnline
 dotnet restore
 dotnet run
 ```
@@ -77,48 +86,48 @@ By default, the app starts at `https://localhost:5001` and `http://localhost:500
 ## Project Structure
 
 ```text
-TSPOnline/
+├── Docker/           # Dockerfile and Compose configuration
 ├── Extensions/       # Extension methods
 ├── HtmlGenerator/    # Custom HTML generators (e.g. alert messages)
-├── Interfaces/       # Interface definitions
+├── Infrastructure/   # Startup infrastructure (database initialization and schema)
+├── Interfaces/       # Repository interface definitions
 ├── Models/           # Data models and settings
 ├── Pages/            # Razor Pages, grouped by resource type (Monsters, Pets, Equipments, ...)
+├── Properties/       # Local launch profiles
 ├── Repositorys/      # Data access layer (Dapper)
-├── files/database/   # SQLite database
-└── wwwroot/          # Static assets (images, front-end libraries)
+├── files/database/   # Bundled seed database and the generated runtime database
+├── wwwroot/          # Static assets (images, LibMan-managed front-end libraries)
+├── Program.cs        # Entry point and request pipeline configuration
+├── appsettings.json  # Default configuration (local SQLite connection string)
+├── libman.json       # LibMan front-end library manifest
+└── TSPOnline.csproj
 ```
 
 ## Deployment
 
 ### Docker
 
-Build the image:
+Build the image from the repository root:
 
 ```bash
-docker build -t tsp-holey-cc -f Dockerfile .
+docker build -t tsp-holey-cc -f Docker/Dockerfile .
 ```
 
 Run the container:
 
 ```bash
-docker run -d -p 8200:8080 --name tsponline tsp-holey-cc
+docker run -d -p 8080:8080 --name tsponline tsp-holey-cc
 ```
 
-Or start it via `docker-compose.yml`. This file is excluded from version control (see `.gitignore`), so you must create it yourself, for example:
+The container listens on port `8080`. The image runs as the non-root user identified by the .NET base image's `APP_UID` (`1654` for the .NET 10 Linux images used here), and the publish output is owned by that user so the runtime database can be initialized safely.
 
-```yaml
-version: '3'
-services:
-  tsponline:
-    image: tsp-holey-cc
-    container_name: tsponline
-    ports:
-      - 8200:8080
-```
+Or use the included Compose configuration, which builds from the repository root and persists the runtime database in the local `files/database` directory:
 
 ```bash
-docker compose up -d
+docker compose -f Docker/compose.yaml up -d
 ```
+
+Never commit production secrets or a runtime database. If a secret has ever been committed, remove it from the active configuration and rotate it; adding the file to `.gitignore` does not remove it from Git history.
 
 ## Contributing
 

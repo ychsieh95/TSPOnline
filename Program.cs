@@ -5,9 +5,15 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using TSPOnline.Extensions;
 using TSPOnline.HtmlGenerator;
+using TSPOnline.Infrastructure;
 using TSPOnline.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("ConnectionStrings:DefaultConnection is not configured.");
+
+await DatabaseInitializer.InitializeAsync(connectionString, builder.Environment.ContentRootPath);
 
 // Add appsettings.json to configuration
 builder.Services.Configure<AppSettings>(builder.Configuration);
@@ -49,7 +55,8 @@ else
                 var ex = context.Features.Get<IExceptionHandlerFeature>();
                 if (ex is not null)
                 {
-                    string message = $"[Message] {ex.Error.Message}{Environment.NewLine}[StackTrace] {ex.Error.StackTrace.TrimStart(' ')}";
+                    var stackTrace = ex.Error.StackTrace?.TrimStart(' ') ?? string.Empty;
+                    string message = $"[Message] {ex.Error.Message}{Environment.NewLine}[StackTrace] {stackTrace}";
                     System.Text.Encoding.Default.GetBytes(message).SaveToFile(
                         filename: $"{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.log",
                         saveDir: @"logs/",
@@ -58,12 +65,6 @@ else
                 }
             })
     });
-}
-
-// Select DbConnectionStrings to use
-if (app.Environment.IsDevelopment())
-{
-    builder.Configuration["ConnectionStrings:DefaultConnection"] = builder.Configuration["ConnectionStrings:LocalDbConnection"];
 }
 
 // Enable `Reverse Proxy` mode when running on Linux

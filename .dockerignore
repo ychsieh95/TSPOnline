@@ -1,0 +1,46 @@
+# Build outputs
+**/[Bb]in/
+**/[Oo]bj/
+**/[Oo]ut/
+**/[Pp]ublish/
+artifacts/
+
+# Development and editor files
+**/*.csproj.user
+**/*.suo
+**/*.user
+.agents/
+.codex/
+.idea/
+.vs/
+.vscode/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+appsettings.*.json
+!appsettings.example.json
+secrets.json
+*.cer
+*.crt
+*.key
+*.p12
+*.pem
+*.pfx
+
+# Runtime-generated data
+files/database/tsponline.db
+files/database/tsponline.db-*
+logs/
+wwwroot/logs/
+
+# Source-control metadata
+.git/
+.gitattributes
+.gitignore
+
+# Documentation and local tooling
+.config/
+Docker/compose.yaml
+README*.md
